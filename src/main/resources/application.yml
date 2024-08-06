@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: gestao-vagas
+    version: 1.0.0
+    author: soupaulodev
+
+  profile:
+    active: dev
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        format_sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gestao_vagas
+    driver-class-name: org.postgresql.Driver
+    username: docker
+    password: docker
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    enabled: true
+  openapi:
+    info:
+      version: 1.0.0
+      title: Gestao Vagas API
+      description: OpenAPI API documentation for Gestao Vagas

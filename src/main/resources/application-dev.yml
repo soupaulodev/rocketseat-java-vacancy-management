@@ -1,0 +1,9 @@
+datasource:
+    url: jdbc:postgresql://localhost:5432/gestao_vagas
+    driver-class-name: org.postgresql.Driver
+    username: docker
+    password: docker
+
+spring:
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
