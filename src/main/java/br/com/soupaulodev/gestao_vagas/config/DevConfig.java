@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Optional;
 
 @Configuration
 @Profile("dev")
@@ -21,26 +21,24 @@ public class DevConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        CandidateEntity candidateRepository = this.candidateRepository.findByUsername("username0");
+        Optional<CandidateEntity> seeded = this.candidateRepository.findByUsername("username0");
 
-        if (candidateRepository != null) {
-            return;
-        }
+        if (!seeded.isPresent()) {
+            for (int i = 0; i < 10; i++) {
 
-        for (int i = 0; i < 10; i++) {
+                CandidateEntity candidate = new CandidateEntity(
+                        null,
+                        "Candidate " + i,
+                        "username" + i,
+                        "email" + i + "@gmail.com",
+                        "password" + i,
+                        "description" + i,
+                        "curriculum" + i,
+                        LocalDateTime.now()
+                );
 
-            CandidateEntity candidate = new CandidateEntity(
-                UUID.randomUUID(),
-                "Candidate " + i,
-                "username" + i,
-                "email" + i + "@gmail.com",
-                "password" + i,
-                "description" + i,
-                "curriculum" + i,
-                LocalDateTime.now()
-            );
-
-            this.candidateRepository.save(candidate);
+                this.candidateRepository.save(candidate);
+            }
         }
     }
 }
