@@ -1,8 +1,13 @@
 package br.com.soupaulodev.gestao_vagas.modules.candidate.controllers;
 
+import br.com.soupaulodev.gestao_vagas.exceptions.UserFoundException;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntity;
-import br.com.soupaulodev.gestao_vagas.modules.candidate.services.CandidateService;
+import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
+import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.DeleteCandidateUseCase;
+import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.GetAllCandidatesUseCase;
+import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.GetOneCandidateUseCase;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,31 +19,67 @@ import java.util.UUID;
 @RequestMapping("/candidate")
 public class CandidateController {
 
-    private final CandidateService candidateService;
+    private final CreateCandidateUseCase createCandidateUseCase;
+    private final GetOneCandidateUseCase getOneCandidateUseCase;
+    private final GetAllCandidatesUseCase getAllCandidatesUseCase;
+    private final DeleteCandidateUseCase deleteCandidateUseCase;
 
-    public CandidateController(CandidateService candidateService) {
-        this.candidateService = candidateService;
+    public CandidateController(
+            CreateCandidateUseCase createCandidateUseCase,
+            GetOneCandidateUseCase getOneCandidateUseCase,
+            GetAllCandidatesUseCase getAllCandidatesUseCase,
+            DeleteCandidateUseCase deleteCandidateUseCase
+    ) {
+        this.createCandidateUseCase = createCandidateUseCase;
+        this.getOneCandidateUseCase = getOneCandidateUseCase;
+        this.getAllCandidatesUseCase = getAllCandidatesUseCase;
+        this.deleteCandidateUseCase = deleteCandidateUseCase;
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<CandidateEntity>> getAll() {
-        return ResponseEntity.ok().body(candidateService.getAll());
+
+        try {
+            return ResponseEntity.ok().body(getAllCandidatesUseCase.execute());
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CandidateEntity> getOne(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(candidateService.getOne(id));
+    public ResponseEntity<Object> getOne(@PathVariable UUID id) {
+
+        try {
+            return ResponseEntity.ok().body(getOneCandidateUseCase.execute(id));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CandidateEntity> create(@RequestBody @Valid CandidateEntity candidate) {
-        URI uri = URI.create("/candidate/" + candidate.getId());
-        return ResponseEntity.created(uri).body(candidateService.create(candidate));
+    public ResponseEntity<Object> create(@RequestBody @Valid CandidateEntity candidate) {
+
+        try {
+            var result = createCandidateUseCase.execute(candidate);
+            URI uri = URI.create("/candidate/" + result.getId());
+            return ResponseEntity.created(uri).body(result);
+
+        } catch (UserFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        candidateService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Object> delete(@PathVariable UUID id) {
+
+        try {
+            deleteCandidateUseCase.execute(id);
+            return ResponseEntity.noContent().build();
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
