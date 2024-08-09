@@ -66,7 +66,7 @@ public class CandidateController {
             URI uri = URI.create("/candidate/" + result.getId());
             return ResponseEntity.created(uri).body(result);
 
-        } catch (UserFoundException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

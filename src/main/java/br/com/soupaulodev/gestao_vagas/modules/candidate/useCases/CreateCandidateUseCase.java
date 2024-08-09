@@ -5,6 +5,7 @@ import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntit
 import br.com.soupaulodev.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -25,6 +26,7 @@ public class CreateCandidateUseCase {
         });
 
         candidateEntity.setId(UUID.randomUUID());
+        candidateEntity.setCreated_at(LocalDateTime.now());
 
         return this.candidateRepository.save(candidateEntity);
     }
