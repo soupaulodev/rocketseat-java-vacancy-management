@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,30 +18,16 @@ public class CandidateController {
 
     private final CreateCandidateUseCase createCandidateUseCase;
     private final GetOneCandidateUseCase getOneCandidateUseCase;
-    private final GetAllCandidatesUseCase getAllCandidatesUseCase;
     private final DeleteCandidateUseCase deleteCandidateUseCase;
 
     public CandidateController(
             CreateCandidateUseCase createCandidateUseCase,
             GetOneCandidateUseCase getOneCandidateUseCase,
-            GetAllCandidatesUseCase getAllCandidatesUseCase,
             DeleteCandidateUseCase deleteCandidateUseCase
     ) {
         this.createCandidateUseCase = createCandidateUseCase;
         this.getOneCandidateUseCase = getOneCandidateUseCase;
-        this.getAllCandidatesUseCase = getAllCandidatesUseCase;
         this.deleteCandidateUseCase = deleteCandidateUseCase;
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<CandidateEntity>> getAll() {
-
-        try {
-            return ResponseEntity.ok().body(getAllCandidatesUseCase.execute());
-
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
     }
 
     @GetMapping("/{id}")
