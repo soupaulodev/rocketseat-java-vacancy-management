@@ -1,10 +1,8 @@
 package br.com.soupaulodev.gestao_vagas.modules.candidate.controllers;
 
-import br.com.soupaulodev.gestao_vagas.exceptions.UserFoundException;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.DeleteCandidateUseCase;
-import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.GetAllCandidatesUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.GetOneCandidateUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
