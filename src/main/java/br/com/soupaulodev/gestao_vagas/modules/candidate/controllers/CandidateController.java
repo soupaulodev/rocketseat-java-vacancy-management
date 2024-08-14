@@ -1,5 +1,6 @@
 package br.com.soupaulodev.gestao_vagas.modules.candidate.controllers;
 
+import br.com.soupaulodev.gestao_vagas.exceptions.UserFoundException;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.DeleteCandidateUseCase;
@@ -41,7 +42,7 @@ public class CandidateController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<Object> create(@RequestBody @Valid CandidateEntity candidate) {
 
         try {
@@ -49,8 +50,10 @@ public class CandidateController {
             URI uri = URI.create("/candidate/" + result.getId());
             return ResponseEntity.created(uri).body(result);
 
-        } catch (Exception e) {
+        } catch (UserFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 

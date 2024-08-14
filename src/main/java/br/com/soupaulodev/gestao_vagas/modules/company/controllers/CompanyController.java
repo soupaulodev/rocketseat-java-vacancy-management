@@ -30,7 +30,7 @@ public class CompanyController {
         this.deleteCompanyUseCase = deleteCompanyUseCase;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<Object> create(@RequestBody @Valid CompanyEntity companyEntity) {
 
         try {

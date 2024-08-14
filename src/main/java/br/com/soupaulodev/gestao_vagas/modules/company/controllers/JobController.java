@@ -34,7 +34,7 @@ public class JobController {
         this.deleteJobUseCase = deleteJobUseCase;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<Object> create(@RequestBody @Valid JobEntity jobEntity) {
         try {
             var result = this.createJobUseCase.execute(jobEntity);
