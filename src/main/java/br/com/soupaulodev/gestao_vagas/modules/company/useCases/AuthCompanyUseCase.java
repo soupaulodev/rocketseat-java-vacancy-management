@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
+import java.time.Duration;
+import java.time.Instant;
 
 @Service
 public class AuthCompanyUseCase {
@@ -41,6 +43,7 @@ public class AuthCompanyUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secret);
         String token = JWT.create().withIssuer("gestao-vagas")
+                .withExpiresAt(Instant.now().plus(Duration.ofDays(7)))
                 .withSubject(companyEntity.getId().toString())
                 .sign(algorithm);
 
