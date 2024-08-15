@@ -1,11 +1,14 @@
 package br.com.soupaulodev.gestao_vagas.modules.company.controllers;
 
+import br.com.soupaulodev.gestao_vagas.modules.company.dtos.CreateJobDTO;
 import br.com.soupaulodev.gestao_vagas.modules.company.entities.JobEntity;
 import br.com.soupaulodev.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.company.useCases.DeleteJobUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.company.useCases.GetAllJobUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.company.useCases.GetJobUseCase;
+import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +38,12 @@ public class JobController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@RequestBody @Valid JobEntity jobEntity) {
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateJobDTO createJobDTO, ServletRequest request) {
         try {
+            JobEntity jobEntity = new JobEntity();
+            BeanUtils.copyProperties(createJobDTO, jobEntity);
+            jobEntity.setCompanyId(UUID.fromString(request.getAttribute("company_id").toString()));
+
             var result = this.createJobUseCase.execute(jobEntity);
             URI uri = URI.create("/job/" + result.getId());
             return ResponseEntity.created(uri).body(result);
