@@ -1,7 +1,6 @@
 package br.com.soupaulodev.gestao_vagas.modules.candidate.controllers;
 
 import br.com.soupaulodev.gestao_vagas.modules.candidate.dtos.AuthCandidateRequestDTO;
-import br.com.soupaulodev.gestao_vagas.modules.candidate.dtos.AuthCandidateResponseDTO;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.AuthCandidateUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,11 @@ public class AuthCandidateController {
     }
 
     @RequestMapping("/auth")
-    public ResponseEntity<AuthCandidateResponseDTO> authCandidate(AuthCandidateRequestDTO authCandidateRequestDTO) {
+    public ResponseEntity<Object> authCandidate(AuthCandidateRequestDTO authCandidateRequestDTO) {
         try {
             return ResponseEntity.ok().body(this.authCandidateUseCase.execute(authCandidateRequestDTO));
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthCandidateResponseDTO(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
 
     }
