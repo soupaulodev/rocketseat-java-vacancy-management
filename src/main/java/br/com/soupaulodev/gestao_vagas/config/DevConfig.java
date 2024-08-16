@@ -2,18 +2,13 @@ package br.com.soupaulodev.gestao_vagas.config;
 
 import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.repositories.CandidateRepository;
-import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
-import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.com.soupaulodev.gestao_vagas.modules.company.repositories.CompanyRepository;
-import br.com.soupaulodev.gestao_vagas.modules.company.useCases.CreateCompanyUseCase;
-import br.com.soupaulodev.gestao_vagas.modules.company.useCases.GetCompanyUseCase;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Configuration
 @Profile("dev")
