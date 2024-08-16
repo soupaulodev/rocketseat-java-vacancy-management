@@ -15,6 +15,7 @@ import javax.naming.AuthenticationException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 
 @Service
 public class AuthCandidateUseCase {
@@ -44,13 +45,14 @@ public class AuthCandidateUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
+        Instant expiresAt = Instant.now().plus(Duration.ofDays(7));
         String token = JWT.create().withIssuer("gestao-vagas")
-                .withExpiresAt(Instant.now().plus(Duration.ofDays(7)))
+                .withExpiresAt(expiresAt)
                 .withSubject(candidate.getId().toString())
                 .withClaim("roles", Arrays.asList("candidate"))
                 .sign(algorithm);
 
-        return new AuthCandidateResponseDTO(token);
+        return new AuthCandidateResponseDTO(token, Date.from(expiresAt));
 
     }
 }

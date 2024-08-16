@@ -1,4 +1,6 @@
 package br.com.soupaulodev.gestao_vagas.modules.candidate.dtos;
 
-public record AuthCandidateResponseDTO(String accessToken) {
+import java.util.Date;
+
+public record AuthCandidateResponseDTO(String accessToken, Date expiresAt) {
 }
