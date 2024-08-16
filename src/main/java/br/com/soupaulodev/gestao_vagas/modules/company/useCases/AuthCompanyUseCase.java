@@ -1,6 +1,5 @@
 package br.com.soupaulodev.gestao_vagas.modules.company.useCases;
 
-import br.com.soupaulodev.gestao_vagas.exceptions.UserNotFoundException;
 import br.com.soupaulodev.gestao_vagas.modules.company.dtos.AuthCompanyDTO;
 import br.com.soupaulodev.gestao_vagas.modules.company.entities.CompanyEntity;
 import br.com.soupaulodev.gestao_vagas.modules.company.repositories.CompanyRepository;
@@ -18,7 +17,7 @@ import java.time.Instant;
 @Service
 public class AuthCompanyUseCase {
 
-    @Value("${security.token.secret}")
+    @Value("${security.token.secret.company}")
     private String secret;
 
     private final CompanyRepository companyRepository;
@@ -43,11 +42,9 @@ public class AuthCompanyUseCase {
         if (!passwordMatch) throw new AuthenticationException();
 
         Algorithm algorithm = Algorithm.HMAC256(secret);
-        String token = JWT.create().withIssuer("gestao-vagas")
+        return JWT.create().withIssuer("gestao-vagas")
                 .withExpiresAt(Instant.now().plus(Duration.ofDays(7)))
                 .withSubject(companyEntity.getId().toString())
                 .sign(algorithm);
-
-        return token;
     }
 }
