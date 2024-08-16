@@ -7,6 +7,7 @@ import br.com.soupaulodev.gestao_vagas.modules.company.repositories.CompanyRepos
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class AuthCompanyUseCase {
 
         CompanyEntity companyEntity = this.companyRepository
                 .findByUsername(authCompanyDTO.getUsername())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UsernameNotFoundException("Username/password incorrect"));
 
         boolean passwordMatch = this.passwordEncoder.matches(authCompanyDTO.getPassword(), companyEntity.getPassword());
 
