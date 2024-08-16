@@ -4,7 +4,7 @@ import br.com.soupaulodev.gestao_vagas.exceptions.UserFoundException;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.DeleteCandidateUseCase;
-import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.GetOneCandidateUseCase;
+import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +18,24 @@ import java.util.UUID;
 public class CandidateController {
 
     private final CreateCandidateUseCase createCandidateUseCase;
-    private final GetOneCandidateUseCase getOneCandidateUseCase;
+    private final ProfileCandidateUseCase profileCandidateUseCase;
     private final DeleteCandidateUseCase deleteCandidateUseCase;
 
     public CandidateController(
-            CreateCandidateUseCase createCandidateUseCase,
-            GetOneCandidateUseCase getOneCandidateUseCase,
-            DeleteCandidateUseCase deleteCandidateUseCase
+        CreateCandidateUseCase createCandidateUseCase,
+        ProfileCandidateUseCase profileCandidateUseCase,
+        DeleteCandidateUseCase deleteCandidateUseCase
     ) {
         this.createCandidateUseCase = createCandidateUseCase;
-        this.getOneCandidateUseCase = getOneCandidateUseCase;
+        this.profileCandidateUseCase = profileCandidateUseCase;
         this.deleteCandidateUseCase = deleteCandidateUseCase;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOne(@PathVariable UUID id) {
+    public ResponseEntity<Object> get(@PathVariable UUID id) {
 
         try {
-            return ResponseEntity.ok().body(getOneCandidateUseCase.execute(id));
+            return ResponseEntity.ok().body(this.profileCandidateUseCase.execute(id));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
