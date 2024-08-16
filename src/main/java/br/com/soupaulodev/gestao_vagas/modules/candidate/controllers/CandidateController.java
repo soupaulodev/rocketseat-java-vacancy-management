@@ -5,6 +5,7 @@ import br.com.soupaulodev.gestao_vagas.modules.candidate.entities.CandidateEntit
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.DeleteCandidateUseCase;
 import br.com.soupaulodev.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +33,12 @@ public class CandidateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@PathVariable UUID id) {
+    public ResponseEntity<Object> get(HttpServletRequest request) {
+
+        UUID candidateId = UUID.fromString(request.getAttribute("candidate_id").toString());
 
         try {
-            return ResponseEntity.ok().body(this.profileCandidateUseCase.execute(id));
+            return ResponseEntity.ok().body(this.profileCandidateUseCase.execute(candidateId));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
