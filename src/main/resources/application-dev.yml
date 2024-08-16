@@ -10,4 +10,6 @@ spring:
 
 security:
     token:
-        secret: "mySecret"
+        secret:
+            candidate: "mySecret"
+            company: "mySecret"
